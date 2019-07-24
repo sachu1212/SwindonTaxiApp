@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Directions Service</title>
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+      height: 30%;
+      width: 30%;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <div id="destination"></div>
+  <button id="submit" onclick="return getAddressFromPostcode()">Calculate Address</button>
+  <div id="orgtext"></div>
+  <div id="desttext"></div>
+  <div id="disttext">The Distance Between The Two Points Is Displayed Here!</div> 
+
+  <script>
+    function initMap() {
+      var directionsService = new google.maps.DirectionsService;
+      var directionsDisplay = new google.maps.DirectionsRenderer;
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 7,
+        center: { lat: 51.35, lng: -1.47 }
+      });
+      directionsDisplay.setMap(map);
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+      //getInfoFromDatabase();
+    }
+
+    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+      var c = url.searchParams.get("origin");
+      var d = url.searchParams.get("destination");
+      console.log(c, d);
+      directionsService.route({
+        origin: c,
+        destination: d,
+        travelMode: 'DRIVING'
+      }, function (response, status) {
+        //console.log(response);
+        if (status === 'OK') {
+          directionsDisplay.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+    }
+    /*
+    function getInfoFromDatabase() {
+
+      const request = new XMLHttpRequest();
+
+      request.responseText = 'text';
+
+      request.onload = function () {
+        var jsonResponse = JSON.parse(request.responseText);
+        console.log(jsonResponse);
+        // console.log(`Loaded: ${request.status} ${request.response}`);
+        // console.log(`${jsonResponse.destination_addresses}`);
+        document.getElementById("destination").innerText = jsonResponse.destination_addresses;
+      }
+
+      request.open('GET', 'http://localhost:8080/find/sn31af/sn15ju');
+      request.send();
+    }
+    */
+   function  getAddressFromPostcode() {
+     getOrgAddressFromPostcode();
+     getDestAddressFromPostcode();
+     //Call Calc Distance Function
+   }
+
+    function getDestAddressFromPostcode() {
+      console.log("Yes!");
+
+      //Get Postcode
+      var number = 1;
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+      var postcode = url.searchParams.get("destination").toUpperCase();
+
+      //Get latitude & longitude
+
+      const request = new XMLHttpRequest();
+
+      request.onload = function () {
+        console.log(JSON.parse(request.responseText));
+        let resultsobject = JSON.parse(request.responseText);
+        let resultsarray = resultsobject["results"];
+        let result = resultsarray[0];
+        let address = result["formatted_address"];
+
+        
+        document.getElementById("desttext").innerText = address;
+
+      }
+
+      request.open('GET', 'https://maps.googleapis.com/maps/api/geocode/json?address=' + postcode + '&key=AIzaSyCblb84UU4BTADMEnfk68QdWtfqXo4TFfw');
+      request.send();
+    }
+
+    function getOrgAddressFromPostcode() {
+      console.log("Yes!");
+
+      //Get Postcode
+      var number = 1;
+      var url_string = window.location.href;
+      var url = new URL(url_string);
+      var postcode = url.searchParams.get("origin").toUpperCase();
+
+      //Get latitude & longitude
+
+      const request = new XMLHttpRequest();
+
+      request.onload = function () {
+        console.log(JSON.parse(request.responseText));
+        let resultsobject = JSON.parse(request.responseText);
+        let resultsarray = resultsobject["results"];
+        let result = resultsarray[0];
+        let address = result["formatted_address"];
+
+        
+        document.getElementById("orgtext").innerText = address;
+
+      }
+
+      request.open('GET', 'https://maps.googleapis.com/maps/api/geocode/json?address=' + postcode + '&key=AIzaSyCblb84UU4BTADMEnfk68QdWtfqXo4TFfw');
+      request.send();
+    }
+
+    function getDistanceBetweenAddress() {
+      // Code Calling API
+    }
+
+
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfbYcwbM_a3AyTkuc9zXFaPUmpbr3ca_c&callback=initMap">
+    </script>
+</body>
+
+</html>

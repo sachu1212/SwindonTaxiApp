@@ -1,0 +1,41 @@
+<script>
+        function sendrequest(){
+        
+                          
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onload = function() {
+                            var chargespermile=1.23
+        
+                                        //alert(xhttp.responseText)
+                                if (this.status == 200) {
+                                    data=JSON.parse(xhttp.responseText);
+                                    document.getElementById("distance").innerHTML = data.rows[0].elements[0].distance.text;
+                                    document.getElementById("time").innerHTML     = data.rows[0].elements[0].duration.text;
+                                    document.getElementById("rate").innerHTML     = chargespermile;
+                                    document.getElementById("charges").innerHTML  = parseFloat(data.rows[0].elements[0].distance.text) * chargespermile;
+                                    alert(JSON.parse(data).destination_addresses)
+                               }
+                               }
+                        var origin=document.getElementById("origin").value;
+                        var destination=document.getElementById("destination").value;
+                        xhttp.open("GET", "http://localhost:8080/find/"+origin+"/"+destination, true);
+                        xhttp.send();
+                }
+    </script>
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBfbYcwbM_a3AyTkuc9zXFaPUmpbr3ca_c&callback=initMap">
+        </script>
+       
+       <form >
+        Enter Username:<input id="origin"><br>
+        Enter Password:<input id="destination"><br>
+        <input type="button" onclick="sendrequest()">
+        </form>
+       
+        
+        <span id="test"> <span><br>
+        Distance:<span id="distance"></span><br>
+        Time:<span id="time"></span><br>
+        Rate:<span id="rate"></span><br>
+        Charges:<span id="charges"></span><br>
+         

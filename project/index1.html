@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <title>Swindon Taxi</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="indexbody">
+    <div>
+        <h1 class="pageHeader">Swindon Taxis</h1>
+    </div>
+    <div class="parent">
+        <!-- <form id="distance_form" method="GET" action="map.html"> -->
+            <div class="form-group">
+                <label>Origin: </label>
+                <input id="from_places" class="form-control" name="origin" placeholder="Enter a location" />
+                <!-- <input id="origin" type="hidden" name="origin" required/> -->
+            </div>
+
+            <div class="form-group">
+                <label>Destination: </label>
+                <input id="to_places" class="form-control" name="destination" placeholder="Enter a location" />
+                <!-- <input id="destination" type="hidden" name="destination" required/> -->
+            </div>
+
+            <input type="submit" value="Calculate" class="btn btn-primary" />
+        </form>
+    </div>
+</body>
+
+<script>
+        function sendrequest(){
+        
+                          
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onload = function() {
+                            var chargespermile=1.23
+        
+                                        //alert(xhttp.responseText)
+                                if (this.status == 200) {
+                                    data=JSON.parse(xhttp.responseText);
+                                    document.getElementById("distance").innerHTML = data.rows[0].elements[0].distance.text;
+                                    document.getElementById("time").innerHTML     = data.rows[0].elements[0].duration.text;
+                                    document.getElementById("rate").innerHTML     = chargespermile;
+                                    document.getElementById("charges").innerHTML  = parseFloat(data.rows[0].elements[0].distance.text) * chargespermile;
+                                    alert(JSON.parse(data).destination_addresses)
+                               }
+                               }
+                        var origin=document.getElementById("origin").value;
+                        var destination=document.getElementById("destination").value;
+                        xhttp.open("GET", "http://localhost:8080/find/"+origin+"/"+destination, true);
+                        xhttp.send();
+                }
+    </script>
+
+</html>

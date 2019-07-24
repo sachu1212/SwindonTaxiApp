@@ -1,0 +1,85 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+.indexbody
+{
+    background-image: url(MainTaxi.jpg);
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.loginbody {
+    background-image: url(Page2.jpg);
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.distance_form {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    background: transparent;
+    padding: 40%;
+    box-sizing: border-box;
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2)
+}
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+.form-control{
+    font-size: 25px;
+    font-style: italic
+
+}
+.form-group {
+    display: flex;
+    justify-content: flex-end;
+}
+
+label {
+    font-size: 30px;
+    
+}
+
+form {
+    background: #167405;
+}
+
+.btn {
+    font-size: 20px;
+    background-color: chartreuse;
+    outline-color: rgb(252, 248, 5);
+    margin: 10px;
+}
+
+.calculate {
+    font: outline;
+}
+
+.pageHeader {
+    text-align: right;
+    vertical-align: text-top;
+    margin:50px;
+    font-size: 30px;
+    background-color: chartreuse;
+    outline-color: rgb(252, 248, 5);
+    color: #167405;
+}
+
+#distance_form {
+    vertical-align: top; 
+    margin: -600px 600px 0px 0px;
+    
+}
